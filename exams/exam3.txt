@@ -1,0 +1,146 @@
+Exam #3 score (thouchi2): 0/200
+
+=== Grade Feedback for Problem "programming_linkedlist_gameNight_leaders4_end" ===
+[0/30]: Test: List of six people (by ref)
+     Message: SIGTERM
+[0/70]: Test: List of six people (by value)
+     Message: SIGTERM
+=====
+[0/100]
+
+--- stdout ---
+g++ gameNight-test.cpp list-p2.cpp person.cpp -std=c++1y -lpng -lpthread -g -o gameNight-test
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gameNight-test is a Catch v1.8.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+List of six people (by ref)
+-------------------------------------------------------------------------------
+gameNight-test.cpp:26
+...............................................................................
+
+gameNight-test.cpp:26: FAILED:
+due to a fatal error condition:
+  SIGTERM - Termination request signal
+
+===============================================================================
+test cases: 1 | 1 failed
+assertions: 1 | 1 failed
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gameNight-test is a Catch v1.8.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+List of six people (by value)
+-------------------------------------------------------------------------------
+gameNight-test.cpp:54
+...............................................................................
+
+gameNight-test.cpp:54: FAILED:
+due to a fatal error condition:
+  SIGTERM - Termination request signal
+
+===============================================================================
+test cases: 1 | 1 failed
+assertions: 1 | 1 failed
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gameNight-test is a Catch v1.8.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+List of six people (by ref)
+-------------------------------------------------------------------------------
+gameNight-test.cpp:26
+...............................................................................
+
+gameNight-test.cpp:26: FAILED:
+due to a fatal error condition:
+  SIGTERM - Termination request signal
+
+===============================================================================
+test cases: 1 | 1 failed
+assertions: 1 | 1 failed
+
+
+
+--- stderr ---
+
+
+--- submitted file: list-p2.cpp ---
+#define _LIST_CPP
+#include "list.h"
+#include "person.h"
+
+#include <cstddef>
+
+
+//
+// In the `List` class, complete the `reorganizeList` member function in
+// `list.cpp`.  The `reorganizeList` function must place all non-leaders at the
+// front of the list followed by all leaders, while otherwise maintain the
+// same order.
+//
+
+template <class T>
+void List<T>::reorganizeList() {
+  ListNode *temp = head;
+  ListNode *store = NULL;
+  if(temp->leader == true){
+    store = temp;
+    while(temp->next != NULL){
+      temp = temp->next;
+    }
+    temp->next = store;
+  }
+  while(temp->next != NULL){
+    if(temp->next->leader == true){
+      store = temp;
+      temp->next = temp->next->next;
+      break;
+    }
+    temp = temp->next;
+  }
+  while(temp->next != NULL){
+    temp = temp->next;
+  }
+  temp->next = store;
+}
+
+
+template <class T>
+List<T>::List() {
+  this->head = NULL;
+}
+
+template <class T>
+void List<T>::insertBack(const T& ndata) {
+  static int ct = 0;
+
+  ListNode* node = new ListNode(ndata);
+  node->leader = (ct++ % 4 == 0);
+
+  if (!head) {
+    head = node;
+  } else {
+    ListNode *thru = head;
+    while (thru->next != NULL) { thru = thru->next; }
+    thru->next = node;
+  }
+}
+
+template <class T>
+const T *List<T>::get(int index) const {
+  ListNode *thru = head;
+  while (thru && index-- > 0) { thru = thru->next; }
+
+  if (thru) { return &(thru->data); }
+  else      { return NULL; }
+}
+
+

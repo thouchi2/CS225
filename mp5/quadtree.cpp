@@ -1,0 +1,212 @@
+/**
+ * @file quadtree.cpp
+ * Quadtree class implementation.
+ * @date Spring 2008
+ */
+
+#include "quadtree.h"
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+Quadtree::Quadtree(){
+    root = NULL;
+}
+
+void Quadtree::buildTree(PNG const & source, int resolution){
+    root = new QuadtreeNode(resolution);
+    BTHelper(source, resolution, root, 0, 0);
+}
+
+void Quadtree::BTHelper(PNG const & source, int resolution, QuadtreeNode *croot, int x, int y){
+    if(resolution == 1){
+        croot->element = *(source(x, y));
+
+        croot->nwChild = NULL;
+		croot->neChild = NULL;
+		croot->swChild = NULL;
+		croot->seChild = NULL;
+        return;
+    }
+
+    croot->nwChild = new QuadtreeNode(resolution/2);
+    croot->neChild = new QuadtreeNode(resolution/2);
+    croot->swChild = new QuadtreeNode(resolution/2);
+    croot->seChild = new QuadtreeNode(resolution/2);
+
+    BTHelper(source, resolution/2, croot->nwChild, x, y);
+    BTHelper(source, resolution/2, croot->neChild, x + croot->res/2, y);
+    BTHelper(source, resolution/2, croot->swChild, x, y + croot->res/2);
+    BTHelper(source, resolution/2, croot->seChild, x + croot->res/2, y + croot->res/2);
+
+    croot->element.red = (croot->nwChild->element.red + croot->neChild->element.red + croot->swChild->element.red + croot->seChild->element.red)/4;
+    croot->element.green = (croot->nwChild->element.green + croot->neChild->element.green + croot->swChild->element.green + croot->seChild->element.green)/4;
+    croot->element.blue = (croot->nwChild->element.blue + croot->neChild->element.blue + croot->swChild->element.blue + croot->seChild->element.blue)/4;
+}
+
+Quadtree::Quadtree(PNG const & source, int resolution){
+    buildTree(source, resolution);
+}
+
+Quadtree::Quadtree(Quadtree const & other){
+    if(other.root != NULL)
+        root = copy(other.root);
+    else{
+        root = NULL;
+        return;
+    }
+}
+
+Quadtree::~Quadtree(){
+    clear(root);
+}
+
+Quadtree::QuadtreeNode * Quadtree::copy(QuadtreeNode *oldRoot){
+    if(oldRoot == NULL)
+        return NULL;
+    QuadtreeNode *newRoot = new QuadtreeNode(oldRoot);
+    newRoot->nwChild = copy(oldRoot->nwChild);
+    newRoot->neChild = copy(oldRoot->neChild);
+    newRoot->swChild = copy(oldRoot->swChild);
+    newRoot->seChild = copy(oldRoot->seChild);
+    return newRoot;
+}
+
+void Quadtree::clear(QuadtreeNode * & croot){
+    if(croot == NULL)
+        return;
+    clear(croot->nwChild);
+    clear(croot->neChild);
+    clear(croot->swChild);
+    clear(croot->seChild);
+
+    delete croot;
+    croot = NULL;
+}
+
+Quadtree const & Quadtree::operator= (Quadtree const & other){
+    clear(root);
+    root = copy(other.root);
+    return *this;
+}
+
+RGBAPixel Quadtree::getPixel(int x, int y) const{
+    return GPHelper(x, y, root);
+}
+
+RGBAPixel Quadtree::GPHelper(int x, int y, QuadtreeNode *croot) const{
+    if(croot->nwChild == NULL)
+        return croot->element;
+    else if(x < croot->res/2){
+        if(y < croot->res/2)
+            return GPHelper(x, y, croot->nwChild);
+        return GPHelper(x, y - croot->res/2, croot->swChild);
+    }
+    else{
+        if(y < croot->res/2)
+            return GPHelper(x - croot->res/2, y, croot->neChild);
+        return GPHelper(x - croot->res/2, y - croot->res/2, croot->seChild);
+    }
+}
+
+PNG Quadtree::decompress() const{
+    if(root == NULL)
+        return PNG();
+    int resolution = root->res;
+    PNG retVal(resolution, resolution);
+    for(size_t i = 0; i < retVal.height(); i++){
+        for(size_t j = 0; j < retVal.width(); j++){
+            *(retVal(i, j)) = getPixel(i, j);
+        }
+    }
+    return retVal;
+}
+
+void Quadtree::clockwiseRotate(){
+    clockwiseRotate(root);
+}
+
+void Quadtree::clockwiseRotate(QuadtreeNode * croot){
+    if(croot == NULL)
+        return;
+
+    clockwiseRotate(croot->nwChild);
+    clockwiseRotate(croot->neChild);
+    clockwiseRotate(croot->swChild);
+    clockwiseRotate(croot->seChild);
+
+    QuadtreeNode * temp = croot->nwChild;
+    croot->nwChild = croot->swChild;
+    croot->swChild = croot->seChild;
+    croot->seChild = croot->neChild;
+    croot->neChild = temp;
+}
+
+void Quadtree::prune(int tolerance){
+    if(root != NULL)
+        prune(tolerance, root);
+}
+
+void Quadtree::prune(int tol, QuadtreeNode * croot){
+    if(croot->nwChild == NULL)
+        return;
+    else if(checkTol(croot, croot, tol)){
+        clear(croot->nwChild);
+        clear(croot->neChild);
+        clear(croot->swChild);
+        clear(croot->seChild);
+    }
+    else{
+        prune(tol, croot->nwChild);
+        prune(tol, croot->neChild);
+        prune(tol, croot->swChild);
+        prune(tol, croot->seChild);
+    }
+}
+
+bool Quadtree::checkTol(QuadtreeNode * croot, QuadtreeNode * croot1, int tol) const{
+    if(croot->nwChild == NULL)
+        return (croot->element.red-croot1->element.red)*(croot->element.red-croot1->element.red)+(croot->element.green-croot1->element.green)*(croot->element.green-croot1->element.green)+(croot->element.blue-croot1->element.blue)*(croot->element.blue-croot1->element.blue) <= tol;
+    bool nw = checkTol(croot->nwChild, croot1, tol);
+    bool ne = checkTol(croot->neChild, croot1, tol);
+    bool sw = checkTol(croot->swChild, croot1, tol);
+    bool se = checkTol(croot->seChild, croot1, tol);
+
+    return nw && ne && sw && se;
+}
+
+int Quadtree::pruneSize(int tolerance) const{
+    if(root == NULL)
+        return 0;
+    return pruneSize(tolerance, root);
+}
+
+int Quadtree::pruneSize(int tol, QuadtreeNode * croot) const{
+    if(croot->nwChild == NULL)
+        return 1;
+    else if(checkTol(croot, croot, tol))
+        return 1;
+    else
+        return pruneSize(tol, croot->nwChild) + pruneSize(tol, croot->neChild) + pruneSize(tol, croot->swChild) + pruneSize(tol, croot->seChild);
+}
+
+int Quadtree::idealPrune(int numLeaves) const{
+    if(root != NULL){
+        int max = 3 * 255 *255;
+        return idealPrune(numLeaves, 0, max);
+    }
+    return 0;
+}
+
+int Quadtree::idealPrune(int numLeaves, int low, int high) const{
+    int mid = (low + high)/2;
+    if(pruneSize(mid) == numLeaves){
+        while(pruneSize(mid) == numLeaves)
+            mid--;
+        return 1 + mid;
+    }
+    else if(pruneSize(mid) > numLeaves)
+        return idealPrune(numLeaves, mid + 1, high);
+    else
+        return idealPrune(numLeaves, low, mid - 1);
+}

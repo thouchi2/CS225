@@ -1,0 +1,24 @@
+Grading r4490 by thouchi2 committed on Thu Jan 26 15:37:19 CST 2017
+Monad Autograder
+Testing lab_debug at 2017-01-30 00:29:25
+
+"I never code in C++. But when I do, I use polymorphism and rand() functions." ~ Chaitanya Datye
+
+Setting up test environment...
+Compiling...
+================================================================
+
+
+Running tests...
+================================================================
+no_segfaults . . . [20 pts] - passed
+produces_out_png . [10 pts] - passed
+similar_sketch . . [30 pts] - passed
+complete_in_01_png [20 pts] - passed
+complete_in_02_png [20 pts] - passed
+
+
+Total score...
+================================================================
+TOTAL SCORE: 100
+

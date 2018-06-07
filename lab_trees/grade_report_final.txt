@@ -1,0 +1,23 @@
+Grading r25900 by thouchi2 committed on Thu Mar  2 18:04:14 CST 2017
+Monad Autograder
+Testing lab_trees at 2017-03-06 00:23:52
+
+"There's not enough wiggleability, you know." ~ Eric Shaffer
+
+Setting up test environment...
+Compiling...
+================================================================
+
+
+Running tests...
+================================================================
+test_isOrdered  . [33 pts] - passed
+test_mirror . . . [33 pts] - passed
+test_printPaths . [34 pts] - passed
+test_sumDistances [25 pts] - passed
+
+
+Total score...
+================================================================
+TOTAL SCORE: 125
+

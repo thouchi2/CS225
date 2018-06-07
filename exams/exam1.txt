@@ -1,0 +1,164 @@
+Exam #1 score (thouchi2): 1/6
+
+=== Grade Feedback for Problem "exam1_createSmallClass_cube" ===
+[1/1]: Test: default constructor
+[0/1]: Test: one parameter constructor
+[0/1]: Test: use of type double
+=====
+[1/3]
+
+--- stdout ---
+g++ -g -O0 -Wall -Wextra main.cpp cube.cpp -o cube-tester
+Testing default constructor...
++ PASS : (new cube())->getVolume == 1
+
+Testing one parameter constructor...
+! FAIL : (new cube(2))->getVolume == 8
+
+Testing use of type double...
+! FAIL : (new cube(2.5))->getVolume == 2.5 * 2.5 * 2.5
+
+
+
+--- stderr ---
+In file included from main.cpp:3:0:
+cube.h:12:3: warning: unused parameter ‘d’ [-Wunused-parameter]
+   cube(double d){}
+   ^
+In file included from cube.cpp:1:0:
+cube.h:12:3: warning: unused parameter ‘d’ [-Wunused-parameter]
+   cube(double d){}
+   ^
+
+
+--- submitted file: cube.cpp ---
+#include "cube.h"
+
+
+
+//
+// The cube class must:
+//
+// - Store a variable d (stored as a double), which represents the length of
+//   one edge of the cube.
+//
+// - Have a default constructor that sets the length of the edge of the cube
+//   to 1.0.
+//
+// - Have a second constructor that takes one parameter: the length of one
+//   edge of the cube
+//
+// - Have a getVolume function that takes no parameters and returns the volume
+//   of the cube (as a double):
+//   - The volume of the cube can be calculated by: d * d * d
+//
+
+--- submitted file: cube.h ---
+#ifndef _CUBE_H
+#define _CUBE_H
+
+class cube{
+public:
+  double d;
+
+  cube(){
+    this->d = 1.0;
+  }
+
+  cube(double d){}
+
+  double getVolume(){
+    return d * d * d;
+  }
+};
+
+
+//
+// The cube class must:
+//
+// - Store a variable d (stored as a double), which represents the length of
+//   one edge of the cube.
+//
+// - Have a default constructor that sets the length of the edge of the cube
+//   to 1.0.
+//
+// - Have a second constructor that takes one parameter: the length of one
+//   edge of the cube
+//
+// - Have a getVolume function that takes no parameters and returns the volume
+//   of the cube (as a double):
+//   - The volume of the cube can be calculated by: d * d * d
+//
+
+#endif
+
+
+=== Grade Feedback for Problem "exam1_mp1-like_illiniBlue2" ===
+[0/1]: Test: in_1.png
+     Message: Unable to run test due to `make` failing.
+[0/1]: Test: in_2.png
+     Message: Unable to run test due to `make` failing.
+[0/1]: Test: in_3.png
+     Message: Unable to run test due to `make` failing.
+=====
+[0/3]
+
+--- stdout ---
+g++ -std=c++1y -c -g -O0 -Wall -Wextra -pedantic main.cpp
+
+
+--- stderr ---
+main.cpp: In function ‘PNG transform_illini_blue(PNG)’:
+main.cpp:11:17: error: ‘original’ is not a class, namespace, or enumeration
+  for(int x; x < original::width(); x++){
+                 ^
+main.cpp:12:18: error: ‘original’ is not a class, namespace, or enumeration
+   for(int y; y < original::height(); y++){
+                  ^
+main.cpp:13:4: error: ‘original’ is not a class, namespace, or enumeration
+    original::blue = 255;
+    ^
+main.cpp:24:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+main.cpp: At global scope:
+main.cpp:9:5: warning: unused parameter ‘original’ [-Wunused-parameter]
+ PNG transform_illini_blue(PNG original) {
+     ^
+make: *** [main.o] Error 1
+
+
+--- submitted file: main.cpp ---
+#include <algorithm>
+#include <iostream>
+
+#include "rgbapixel.h"
+#include "png.h"
+
+using namespace std;
+
+PNG transform_illini_blue(PNG original) {
+
+	for(int x; x < original::width(); x++){
+		for(int y; y < original::height(); y++){
+			original::blue = 255;
+		}
+	}
+
+	//
+	// To "Illini Blue" an image, you must:
+	// - Set the blue component of every pixel to 255.
+	// - The value of the red and green components in each pixel must not
+	//   be changed.
+	//
+
+}
+
+int main() {
+	PNG image("in.png");
+	image = transform_illini_blue(image);
+	image.writeToFile("out.png");
+	return 0;
+}
+
+

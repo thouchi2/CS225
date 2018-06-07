@@ -1,0 +1,249 @@
+/* Your code here! */
+#include "maze.h"
+#include <queue>
+
+SquareMaze::SquareMaze(){
+    width = 0;
+    height = 0;
+    downW.clear();
+    rightW.clear();
+    store = -1;
+}
+
+void SquareMaze::makeMaze(int width, int height){
+    this->width = width;
+    this->height = height;
+    int size = width * height;
+    cells.addelements(size);
+
+    for(int i = 0; i < size; i++){
+        downW.push_back(true);
+        rightW.push_back(true);
+    }
+
+    int x = 0;
+    while(x < size - 1){
+        for(int i = 0; i < size; i++){
+            if((random() * 10 % 100) / (float) 100.0 > 0.9)
+                continue;
+            bool random = (rand() % 10 > 4);
+            if((random && (i % width + 1) == width) ||
+              (!random && (i / width + 1) == height)||
+              (random && (cells.find(i) == cells.find(i + 1))) ||
+              (!random && (cells.find(i) == cells.find(i + width))))
+                continue;
+            if(random){
+                cells.setunion(i, i + 1);
+                rightW[i] = false;
+                x++;
+            }
+            else{
+                cells.setunion(i, i + width);
+                downW[i] = false;
+                x++;
+            }
+        }
+    }
+}
+
+bool SquareMaze::canTravel(int x, int y, int dir) const{
+    if(dir == 0 && x != width - 1)
+        return (rightW[y * width + x] == false);
+    if(dir == 1 && y != height - 1)
+        return (downW[y * width + x] == false);
+    if(dir == 2 && x != 0)
+        return(rightW[y * width + x - 1] == false);
+    if(dir == 3 && y != 0)
+        return (downW[(y - 1) * width + x] == false);
+    return false;
+}
+
+void SquareMaze::setWall(int x, int y, int dir, bool exists){
+    int i = y * width + x;
+    if(dir == 0)
+        rightW[i] = exists;
+    if(dir == 1)
+        downW[i] = exists;
+}
+
+vector<int> SquareMaze::solveMaze(){
+    vector<int> sol;
+    int *last = new int[width];
+    solveMaze(0, 0, sol, last);
+
+    int dest = 0;
+    for(int i = 1; i < width; i++){
+        if(last[dest] < last[i])
+            dest = i;
+    }
+    sol.clear();
+    solveMaze2(0, 0, sol, dest);
+    delete[] last;
+    return sol;
+}
+
+void SquareMaze::solveMaze(int x, int y, vector<int> &sol, int *last){
+    if(y == height - 1)
+        last[x] = sol.size();
+    if(canTravel(x, y, 0)){
+        sol.push_back(0);
+        solveMaze(x + 1, y, sol, last);
+        sol.pop_back();
+        setWall(x, y, 0, false);
+    }
+    if(canTravel(x, y, 1)){
+        sol.push_back(1);
+        setWall(x, y, 1, true);
+        solveMaze(x, y + 1, sol, last);
+        sol.pop_back();
+        setWall(x, y, 1, false);
+    }
+    if(canTravel(x, y, 2)){
+        sol.push_back(2);
+        setWall(x - 1, y, 0, true);
+        solveMaze(x - 1, y, sol, last);
+        sol.pop_back();
+        setWall(x - 1, y, 0, false);
+    }
+    if(canTravel(x, y, 3)){
+        sol.push_back(3);
+        setWall(x, y - 1, 1, true);
+        solveMaze(x, y - 1, sol, last);
+        sol.pop_back();
+        setWall(x, y - 1, 1, false);
+    }
+    return;
+}
+
+bool SquareMaze::solveMaze2(int x, int y, vector<int> &sol, int end){
+    if(y == height - 1 && x == end)
+        return true;
+    if(canTravel(x, y, 0)){
+        sol.push_back(0);
+        setWall(x, y, 0, true);
+        if(solveMaze2(x + 1, y, sol, end)){
+            setWall(x, y, 0, false);
+            return true;
+        }
+        sol.pop_back();
+        setWall(x, y, 0, false);
+    }
+    if(canTravel(x, y, 1)){
+        sol.push_back(1);
+        setWall(x, y, 1, true);
+        if(solveMaze2(x, y + 1, sol, end)){
+            setWall(x, y, 1, false);
+            return true;
+        }
+        sol.pop_back();
+        setWall(x, y, 1, false);
+    }
+    if(canTravel(x, y, 2)){
+        sol.push_back(2);
+        setWall(x - 1, y, 0, true);
+        if(solveMaze2(x - 1, y, sol, end)){
+            setWall(x - 1, y, 0, false);
+            return true;
+        }
+        sol.pop_back();
+        setWall(x - 1, y, 0, false);
+    }
+    if(canTravel(x, y, 3)){
+        sol.push_back(3);
+        setWall(x, y - 1, 1, true);
+        if(solveMaze2(x, y - 1, sol, end)){
+            setWall(x, y - 1, 1, false);
+            return true;
+        }
+        sol.pop_back();
+        setWall(x, y - 1, 1, false);
+    }
+    return false;
+}
+
+PNG * SquareMaze::drawMaze() const{
+    PNG * out = new PNG(width * 10 + 1, height * 10 + 1);
+    int size = width * height;
+    for(int r = 0; r < height * 10 + 1; r++){
+        (*out)(0, r)->red = 0;
+        (*out)(0, r)->green = 0;
+        (*out)(0, r)->blue = 0;
+    }
+    for(int c = 10; c < width * 10 + 1; c++){
+        (*out)(c, 0)->red = 0;
+        (*out)(c, 0)->green = 0;
+        (*out)(c, 0)->blue = 0;
+    }
+
+    for(int i = 0; i < size; i++){
+        int my = i / width;
+        int mx = i % width;
+        if(rightW[i]){
+            for(int j = 0; j <= 10; j++){
+                (*out)((mx + 1) * 10, my * 10 + j)->red = 0;
+                (*out)((mx + 1) * 10, my * 10 + j)->green = 0;
+                (*out)((mx + 1) * 10, my * 10 + j)->blue = 0;
+            }
+        }
+        if(downW[i]){
+            for(int j = 0; j <= 10; j++){
+                (*out)(mx * 10 + j, (my + 1) * 10)->red = 0;
+                (*out)(mx * 10 + j, (my + 1) * 10)->green = 0;
+                (*out)(mx * 10 + j, (my + 1) * 10)->blue = 0;
+            }
+        }
+    }
+    return out;
+}
+
+PNG * SquareMaze::drawMazeWithSolution(){
+    PNG * out = drawMaze();
+    vector<int> sol = solveMaze();
+    int x = 5; int y = 5;
+    for(size_t i = 0; i < sol.size(); i++){
+        if(sol[i] == 0){
+            for(int j = 0; j < 11; j++){
+                (*out)(x + j, y)->red = 255;
+                (*out)(x + j, y)->green = 0;
+                (*out)(x + j, y)->blue = 0;
+            }
+            x += 10;
+        }
+        if(sol[i] == 1){
+            for(int j = 0; j < 11; j++)
+			{
+				(*out)(x, y + j)->red = 255;
+				(*out)(x, y + j)->green = 0;
+				(*out)(x, y + j)->blue = 0;
+			}
+			y += 10;
+        }
+        if(sol[i] == 2){
+			for(int j = 0; j < 11; j++)
+			{
+				(*out)(x - j, y)->red = 255;
+				(*out)(x - j, y)->green = 0;
+				(*out)(x - j, y)->blue = 0;
+			}
+			x -= 10;
+		}
+        if(sol[i] == 3){
+			for(int j = 0; j < 11; j++)
+			{
+				(*out)(x, y - j)->red = 255;
+				(*out)(x, y - j)->green = 0;
+				(*out)(x, y - j)->blue = 0;
+			}
+			y -= 10;
+		}
+    }
+
+    int mx = x / 10;
+    int my = height - 1;
+    for(int i = 1; i < 10; i++){
+        (*out)(mx * 10 + i, (my + 1) * 10)->red = 255;
+		(*out)(mx * 10 + i, (my + 1) * 10)->green = 255;
+		(*out)(mx * 10 + i, (my + 1) * 10)->blue = 255;
+    }
+    return out;
+}

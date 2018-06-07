@@ -1,0 +1,312 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+<style>
+tr.total {
+  border-top: solid 2px black;
+  font-weight: bold;
+}
+tr.total td:first-child {
+  text-align: right;
+}
+li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 {
+  list-style-type: decimal !important;
+}
+pre {
+  font-size: 0.75rem;
+}
+h5 {
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h3>thouchi2's feedback report for exam3</h3>
+<hr>
+<h4>Summary and Overall Grade</h4>
+<table class="table table-sm" style="width: auto;">
+  <thead>
+    <tr>
+      <th>Problem Name</th>
+      <th colspan="4">Score</th>
+    </tr>
+  </head>
+  <tbody>
+    <tr>
+      <td>Game Night Leaders</td>
+      <td style="text-align: right;">0</td>
+      <td>/</td>
+      <td style="text-align: right;">100</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>(Unanswered Question)</td>
+      <td style="text-align: right;">0</td>
+      <td>/</td>
+      <td style="text-align: right;">100</td>
+      <td></td>
+    </tr>
+    <tr class="total">
+      <td>Total:</td>
+      <td style="text-align: right;">0</td>
+      <td>/</td>
+      <td style="text-align: right;">200</td>
+      <td>0.00%</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+  <h4>&quot;Game Night Leaders&quot; Feedback</h4>
+
+  <h5>Question Text</h5>
+  <div style="border: solid 1px black; padding: 10px;">
+    <h4 id="thesetup">The Setup</h4>
+<p>Consider a game night for students, where each student is added to a end of a
+linked list in the order they arrive to the game night.  To help organize the
+games, every 4th student is a leader.  For example:</p>
+<pre><code>1st     -&gt;  2nd  -&gt;  3rd   -&gt;  4th  -&gt; 5th     -&gt; 6th    -&gt;  ...
+Alice   -&gt;  Bob  -&gt;  Carol -&gt;  Don  -&gt; Erin    -&gt; Faythe -&gt;  ...
+[Leader]                               [Leader]
+</code></pre>
+<h4 id="theproblem">The Problem</h4>
+<p>In the <code>List</code> class, complete the <code>reorganizeList</code> member function in <code>list-p2.cpp</code>.
+The <code>reorganizeList</code> function must place all non-leaders at the front of the list
+followed by all leaders, while otherwise maintaining the same order.</p>
+<p>Using the example above, the new list must be the following:</p>
+<pre><code>2nd  -&gt;  3rd   -&gt;  4th  -&gt; 6th    -&gt; 1st     -&gt; 5th     -&gt;  ...
+Bob  -&gt;  Carol -&gt;  Don  -&gt; Faythe -&gt; Alice   -&gt; Erin    -&gt;  ...
+                                     [Leader]   [Leader]
+</code></pre>
+<h4 id="reference">Reference</h4>
+<p>The <code>List</code> class (<code>list-p2.cpp</code>, <code>list.h</code>) stores a singly linked list of <code>ListNode</code>
+nodes, using the same structure and variable names as MP3.</p>
+<p>The <code>ListNode</code> class contains a <code>bool leader</code> that will be set to <code>true</code> when
+that entry contains a leader.</p>
+<h4 id="compileandtest">Compile and Test</h4>
+<p>A complete Makefile and tester code is provided for you.  To compile and test,
+run:</p>
+<pre><code>make
+./gameNight-test
+</code></pre>
+  </div>
+
+  <h5>File Submissions</h5>
+    <div>
+      list-p2.cpp
+    </div>
+    <div>
+      <pre class="prettyprint linenums">#define _LIST_CPP
+#include &quot;list.h&quot;
+#include &quot;person.h&quot;
+
+#include &lt;cstddef&gt;
+
+
+//
+// In the &#x60;List&#x60; class, complete the &#x60;reorganizeList&#x60; member function in
+// &#x60;list.cpp&#x60;.  The &#x60;reorganizeList&#x60; function must place all non-leaders at the
+// front of the list followed by all leaders, while otherwise maintain the
+// same order.
+//
+
+template &lt;class T&gt;
+void List&lt;T&gt;::reorganizeList() {
+  ListNode *temp &#x3D; head;
+  ListNode *store &#x3D; NULL;
+  if(temp-&gt;leader &#x3D;&#x3D; true){
+    store &#x3D; temp;
+    while(temp-&gt;next !&#x3D; NULL){
+      temp &#x3D; temp-&gt;next;
+    }
+    temp-&gt;next &#x3D; store;
+  }
+  while(temp-&gt;next !&#x3D; NULL){
+    if(temp-&gt;next-&gt;leader &#x3D;&#x3D; true){
+      store &#x3D; temp;
+      temp-&gt;next &#x3D; temp-&gt;next-&gt;next;
+      break;
+    }
+    temp &#x3D; temp-&gt;next;
+  }
+  while(temp-&gt;next !&#x3D; NULL){
+    temp &#x3D; temp-&gt;next;
+  }
+  temp-&gt;next &#x3D; store;
+}
+
+
+template &lt;class T&gt;
+List&lt;T&gt;::List() {
+  this-&gt;head &#x3D; NULL;
+}
+
+template &lt;class T&gt;
+void List&lt;T&gt;::insertBack(const T&amp; ndata) {
+  static int ct &#x3D; 0;
+
+  ListNode* node &#x3D; new ListNode(ndata);
+  node-&gt;leader &#x3D; (ct++ % 4 &#x3D;&#x3D; 0);
+
+  if (!head) {
+    head &#x3D; node;
+  } else {
+    ListNode *thru &#x3D; head;
+    while (thru-&gt;next !&#x3D; NULL) { thru &#x3D; thru-&gt;next; }
+    thru-&gt;next &#x3D; node;
+  }
+}
+
+template &lt;class T&gt;
+const T *List&lt;T&gt;::get(int index) const {
+  ListNode *thru &#x3D; head;
+  while (thru &amp;&amp; index-- &gt; 0) { thru &#x3D; thru-&gt;next; }
+
+  if (thru) { return &amp;(thru-&gt;data); }
+  else      { return NULL; }
+}
+</pre>
+    </div>
+
+  <h5>Results of Tests</h5>
+  <table class="table table-sm" style="width: auto;">
+    <thead>
+      <tr>
+        <th>Problem Name</th>
+        <th colspan="3">Score</th>
+      </tr>
+    </head>
+    <tbody>
+      <tr>
+        <td>List of six people (by ref)</td>
+        <td style="text-align: right;">0</td>
+        <td>/</td>
+        <td style="text-align: right;">30</td>
+      </tr>
+      <tr>
+        <td>List of six people (by value)</td>
+        <td style="text-align: right;">0</td>
+        <td>/</td>
+        <td style="text-align: right;">70</td>
+      </tr>
+      <tr class="total">
+        <td>Total:</td>
+        <td style="text-align: right;">0</td>
+        <td>/</td>
+        <td style="text-align: right;">100</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5>Raw Output</h5>
+  <div>
+    <div>stdout</div>
+    <pre style="border: solid 1px black";>g++ gameNight-test.cpp list-p2.cpp person.cpp -std&#x3D;c++1y -lpng -lpthread -g -o gameNight-test
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gameNight-test is a Catch v1.8.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+List of six people (by ref)
+-------------------------------------------------------------------------------
+gameNight-test.cpp:26
+...............................................................................
+
+gameNight-test.cpp:26: FAILED:
+due to a fatal error condition:
+  SIGTERM - Termination request signal
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+test cases: 1 | 1 failed
+assertions: 1 | 1 failed
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gameNight-test is a Catch v1.8.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+List of six people (by value)
+-------------------------------------------------------------------------------
+gameNight-test.cpp:54
+...............................................................................
+
+gameNight-test.cpp:54: FAILED:
+due to a fatal error condition:
+  SIGTERM - Termination request signal
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+test cases: 1 | 1 failed
+assertions: 1 | 1 failed
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gameNight-test is a Catch v1.8.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+List of six people (by ref)
+-------------------------------------------------------------------------------
+gameNight-test.cpp:26
+...............................................................................
+
+gameNight-test.cpp:26: FAILED:
+due to a fatal error condition:
+  SIGTERM - Termination request signal
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+test cases: 1 | 1 failed
+assertions: 1 | 1 failed
+
+</pre>
+  </div>
+  <div>
+    <div>stderr</div>
+    <pre style="border: solid 1px black";></pre>
+  </div>
+  <hr>
+  <h4>&quot;(Unanswered Question)&quot; Feedback</h4>
+
+  <h5>Question Text</h5>
+  <div style="border: solid 1px black; padding: 10px;">
+    
+  </div>
+
+  <h5>File Submissions</h5>
+
+  <h5>Results of Tests</h5>
+  <table class="table table-sm" style="width: auto;">
+    <thead>
+      <tr>
+        <th>Problem Name</th>
+        <th colspan="3">Score</th>
+      </tr>
+    </head>
+    <tbody>
+      <tr class="total">
+        <td>Total:</td>
+        <td style="text-align: right;">0</td>
+        <td>/</td>
+        <td style="text-align: right;">100</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5>Raw Output</h5>
+  <div>
+    <div>stdout</div>
+    <pre style="border: solid 1px black";></pre>
+  </div>
+  <div>
+    <div>stderr</div>
+    <pre style="border: solid 1px black";></pre>
+  </div>
+  <hr>
+</div>
+</body>
+</html>

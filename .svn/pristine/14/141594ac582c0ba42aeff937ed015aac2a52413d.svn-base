@@ -1,0 +1,45 @@
+Grading r33473 by thouchi2 committed on Sat Mar 25 16:05:53 CDT 2017
+Monad Autograder
+Testing lab_dict at 2017-03-28 00:32:26
+
+"The problem is not enough early" ~ Jordi Paris Ferrer
+
+Setting up test environment...
+Compiling...
+================================================================
+
+
+Running tests...
+================================================================
+test_get_anagrams  . . . . [15 pts] - passed
+test_get_all_anagrams  . . [15 pts] - passed
+test_fib . . . . . . . . . [5 pts]  - passed
+test_memoized_fib  . . . . [15 pts] - passed
+test_homophones  . . . . . [10 pts] - FAILED: Segmentation fault
+test_cartalk_puzzle  . . . [10 pts] - passed
+test_get_common_words_3  . [15 pts] - passed
+test_get_common_words_3000 [15 pts] - passed
+
+
+Total score...
+================================================================
+TOTAL SCORE: 90
+
+
+
+Detailed test output...
+================================================================
+----------------------------------------------------------------
+test_homophones [10 points]
+Result: FAILED: Segmentation fault
+Took 0ms (1000ms timeout)
+Output:
+----------------------------------------------------------------
+Terminated by SIGSEGV
+
+
+----------------------------------------------------------------
+Total score...
+================================================================
+TOTAL SCORE: 90
+

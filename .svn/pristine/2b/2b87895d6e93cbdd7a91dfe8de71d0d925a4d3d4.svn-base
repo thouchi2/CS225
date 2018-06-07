@@ -1,0 +1,95 @@
+Grading r45294 by nwang16 committed on Sat Apr 15 02:21:56 CDT 2017
+Monad Autograder
+Testing mp7.1 at 2017-04-22 00:35:34
+
+"If you just rely on one model, you tend to amputate reality to make it fit your model." ~ David Brooks
+
+Setting up test environment...
+Compiling...
+================================================================
+unit_tests.cpp:37:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:47:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:59:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:70:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:92:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+5 errors generated.
+unit_tests.cpp:37:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:37:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:47:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:59:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:70:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+unit_tests.cpp:92:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+5 errors generated.
+unit_tests.cpp:47:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:59:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:37:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:70:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:47:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:92:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:59:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:70:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+unit_tests.cpp:92:2: error: unknown type name 'DisjointSets'
+        DisjointSets disjSets;
+        ^
+1 error generated.
+
+
+Oops! Something went wrong inside of me.
+Please contact course staff with the following error details, and they'll figure it out:
+proxy.cpp:204: No test cases found
+Running tests...
+================================================================
+Could not execute test cases
+
+
+Total score...
+================================================================
+TOTAL SCORE: 0
+

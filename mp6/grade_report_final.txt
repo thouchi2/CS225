@@ -1,0 +1,138 @@
+Grading r45261 by enx-cs225autograder committed on Sat Apr 15 00:39:45 CDT 2017
+Monad Autograder
+Testing mp6 at 2017-04-16 00:49:17
+
+"Doing more things faster is no substitute for doing the right things." ~ Stephen R. Covey
+
+Setting up test environment...
+Compiling...
+================================================================
+
+
+Running tests...
+================================================================
+testSmallerDimVal . . . . . [3 pts]  - passed
+testShouldReplace . . . . . [3 pts]  - passed
+testLinearCtor_1_10 . . . . [4 pts]  - passed
+testLinearCtor_3_31 . . . . [4 pts]  - passed
+testLinearCtor_2_14 . . . . [4 pts]  - passed
+testLinearNNS_1_10  . . . . [4 pts]  - passed
+testLinearNNS_3_31  . . . . [4 pts]  - passed
+testLinearNNS_2_14  . . . . [4 pts]  - passed
+testDeceptiveNNOneLevelCtor [4 pts]  - passed
+testDeceptiveNNOneLevelNNS  [3 pts]  - passed
+testMinesCtor . . . . . . . [3 pts]  - passed
+testMinesNNS  . . . . . . . [4 pts]  - passed
+testDeceptiveMinesCtor  . . [3 pts]  - passed
+testDeceptiveMinesNNS . . . [5 pts]  - passed
+testTieBreakingCtor . . . . [3 pts]  - FAILED: unit_tests.cpp:300: Assertion (output == readFile("soln_testTieBreakingCtor.out")) failed
+testTieBreakingNNS  . . . . [3 pts]  - passed
+testLeftRecurseCtor . . . . [3 pts]  - passed
+testLeftRecurseNNS  . . . . [3 pts]  - passed
+testRandom1Ctor . . . . . . [3 pts]  - FAILED: unit_tests.cpp:420: Assertion (output == readFile("soln_testRandom1Ctor.out")) failed
+testRandom1NNS  . . . . . . [3 pts]  - passed
+testRandom2Ctor . . . . . . [3 pts]  - FAILED: unit_tests.cpp:442: Assertion (output == readFile("soln_testRandom2Ctor.out")) failed
+testRandom2NNS  . . . . . . [3 pts]  - passed
+testCheckeredMosaic . . . . [12 pts] - passed
+testPrimaryColorMosaic  . . [6 pts]  - passed
+testRandomMosaic  . . . . . [6 pts]  - passed
+
+
+Total score...
+================================================================
+TOTAL SCORE: 91
+
+
+
+Detailed test output...
+================================================================
+----------------------------------------------------------------
+testTieBreakingCtor [3 points]
+Result: FAILED: unit_tests.cpp:300: Assertion (output == readFile("soln_testTieBreakingCtor.out")) failed
+Took 0ms (5000ms timeout)
+Output:
+----------------------------------------------------------------
+              (0,                  
+               0,                  
+            __ 0)__                
+         __/       \__             
+      (0,             (100,        
+       50,             0,          
+       0)              0)          
+     /   \           /   \         
+  (0,     (0,     (50,    (100,    
+   0,      50,     0,      100,    
+   50)     50)     50)     0)      
+    \     / \     / \     / \      
+    (0, (0, (0, (50,(100(50,(50,   
+     0,  100 100 0,  0,  50, 50,   
+     100 0)  100 0)  100 0)  50)   
+
+----------------------------------------------------------------
+testRandom1Ctor [3 points]
+Result: FAILED: unit_tests.cpp:420: Assertion (output == readFile("soln_testRandom1Ctor.out")) failed
+Took 0ms (5000ms timeout)
+Output:
+----------------------------------------------------------------
+                              (6,                                  
+                               6,                                  
+                        ______ 5)______                            
+                 ______/               \______                     
+              (2,                             (8,                  
+               5,                              4,                  
+            __ 3)__                         __ 7)__                
+         __/       \__                   __/       \__             
+      (6,             (5,             (6,             (7,          
+       3,              9,              3,              9,          
+       1)              4)              4)              3)          
+     /   \           /   \           /   \           /   \         
+  {1,     (0,     (3,     (0,     (9,     (7,     (7,     (7,      
+   5,      4,      8,      6,      3,      4,      6,      5,      
+   1}      4)      3)      8)      2)      6)      2)      6)      
+            \               \               \       \       \      
+            (6,             (2,             (8,     (8,     (8,    
+             1,              5,              2,      6,      9,    
+             3)              8)              7)      2)      6)    
+
+----------------------------------------------------------------
+testRandom2Ctor [3 points]
+Result: FAILED: unit_tests.cpp:442: Assertion (output == readFile("soln_testRandom2Ctor.out")) failed
+Took 0ms (5000ms timeout)
+Output:
+----------------------------------------------------------------
+                                                              (3,                                                                  
+                                                               5,                                                                  
+                                                               7,                                                                  
+                                                ______________ 9)______________                                                    
+                                 ______________/                               \______________                                     
+                              (1,                                                             (8,                                  
+                               5,                                                              4,                                  
+                               7,                                                              1,                                  
+                        ______ 6)______                                                 ______ 6)______                            
+                 ______/               \______                                   ______/               \______                     
+              (3,                             (0,                             (9,                             (9,                  
+               5,                              8,                              2,                              4,                  
+               3,                              4,                              3,                              4,                  
+            __ 5)__                         __ 0)__                         __ 2)__                         __ 2)__                
+         __/       \__                   __/       \__                   __/       \__                   __/       \__             
+      (2,             (1,             (0,             (2,             (5,             (5,             (5,             (7,          
+       4,              1,              9,              5,              1,              0,              6,              7,          
+       0,              9,              1,              6,              0,              3,              3,              8,          
+       4)              3)              5)              2)              2)              4)              3)              3)          
+     /   \           /   \           /   \           /   \           /   \           /   \           /   \           /   \         
+  (1,     (0,     (0,     (1,     (1,     (0,     (3,     (0,     (4,     (6,     (4,     (5,     (4,     (4,     (4,     (5,      
+   1,      0,      5,      3,      8,      8,      6,      8,      0,      1,      2,      1,      5,      9,      5,      8,      
+   1,      2,      8,      7,      0,      3,      7,      8,      1,      1,      6,      3,      1,      1,      7,      9,      
+   1)      8)      2)      7)      0)      6)      1)      6)      1)      3)      0)      5)      3)      7)      1)      6)      
+    \       \       \     / \       \       \       \     / \       \       \       \     / \       \       \       \     / \      
+    (3,     (3,     (0, (0, (2,     (2,     (1,     (3, (0, (2,     (8,     (7,     (7, (4, (7,     (8,     (9,     (6, (5, (6,    
+     4,      4,      4,  0,  0,      6,      9,      9,  8,  5,      1,      2,      0,  1,  2,      8,      6,      9,  4,  8,    
+     2,      0,      5,  8,  8,      4,      1,      5,  7,  5,      1,      1,      8,  7,  9,      2,      1,      9,  7,  8,    
+     2)      9)      2)  9)  8)      4)      6)      0)  8)  8)      0)      5)      2)  5)  7)      0)      4)      3)  4)  7)    
+
+
+----------------------------------------------------------------
+Total score...
+================================================================
+TOTAL SCORE: 91
+
